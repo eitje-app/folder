@@ -1,0 +1,4 @@
+#!/Users/jurriaanschrofer/.rvm/gems/ruby-3.0.2
+require_relative "../config/boot"
+require "rake"
+Rake.application.run
