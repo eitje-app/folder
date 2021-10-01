@@ -3,7 +3,7 @@ module Billing::Info::Text
   included do
 
     def self.text
-      "this should be a beautiful poem extension!"
+      puts "this should be a beautiful poem extension!"
     end
 
   end

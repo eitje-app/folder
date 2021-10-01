@@ -39,9 +39,14 @@ module Folder
     config.load_defaults 6.1
     config.api_only = true
 
+    def show(dir)
+      Dir[dir]
+    end
+
     Rails.autoloaders.main.collapse([
       Rails.application.root.join("app/cores/**/{classes,jobs,decorators,sql}"),
-      Rails.application.root.join("app/cores/**/classes/extensions"),
+      Rails.application.root.join("app/cores/**/classes/*"),
+      Rails.application.root.join("app/cores/**/classes/**/extensions"),
       Rails.application.root.join("app/controllers/*/"),
     ].flatten)
 
