@@ -1,6 +1,4 @@
-class Environment # < ApplicationRecord
-
-  # self.table_name = :billing_infos
+class Environment < ApplicationRecord
 
   include Text
 
