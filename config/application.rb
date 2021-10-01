@@ -42,13 +42,14 @@ module Folder
     Rails.autoloaders.main.collapse([
       Rails.application.root.join("app/cores/**/{classes,jobs,decorators,sql}"),
       Rails.application.root.join("app/cores/**/classes/extensions"),
+      Rails.application.root.join("app/controllers/*/"),
     ].flatten)
 
     module Cores
       Namespace = %i( billing )
       TopLevel  = %i( firm legacy )
       All       = Namespace | TopLevel
-      
+
       # e.g.
       # Rails.application.root.join("app/cores/**/{#{Cores::Namespace}}")
       # Rails.application.root.join("app/cores/**/{#{Cores::TopLevel}}")
