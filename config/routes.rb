@@ -1,17 +1,7 @@
 Rails.application.routes.draw do
 
-  namespace :api do
-
-    resources :environments
-    resources :billing_infos
-
-    namespace :admin do
-
-      resources :environments
-      resources :billing_infos
-      
-    end
-
-  end
+  draw('api')
+  draw('api/floor')
+  draw('api/admin')
 
 end
