@@ -1,5 +1,3 @@
-module API
-  class BillingInfosController < APIController
+class API::BillingInfosController < BaseController
 
-  end
 end
