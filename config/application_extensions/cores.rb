@@ -1,22 +1,23 @@
 class Folder::Application < Rails::Application
 
   module Cores
-    Namespace = %i( billing )
-    TopLevel  = %i( firm )
+    Namespace = %i( billing planning )
+    TopLevel  = %i( firm revenue )
     All       = Namespace | TopLevel
+    Root      = Rails.root.join('app/cores')
   end
 
   namespace_core_collapses = [
-    Rails.application.root.join("app/cores/#{Cores::Namespace.join(',')}/{classes,jobs,decorators,sql}"),
-    Rails.application.root.join("app/cores/#{Cores::Namespace.join(',')}/classes/*"),
-    Rails.application.root.join("app/cores/#{Cores::Namespace.join(',')}/classes/**/extensions"),
+    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/{classes,jobs,decorators,sql}"),
+    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/classes/*"),
+    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/classes/**/extensions"),
   ]
 
   top_level_core_collapses = [
-    Rails.application.root.join("app/cores/#{Cores::TopLevel.join(',')}"),
-    Rails.application.root.join("app/cores/#{Cores::TopLevel.join(',')}/{classes,jobs,decorators,sql}"),
-    Rails.application.root.join("app/cores/#{Cores::TopLevel.join(',')}/classes/*"),
-    Rails.application.root.join("app/cores/#{Cores::TopLevel.join(',')}/classes/**/extensions"),
+    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}"),
+    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/{classes,jobs,decorators,sql}"),
+    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/classes/*"),
+    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/classes/**/extensions"),
   ]
 
   controller_collapses = [

@@ -1,0 +1,3 @@
+class Planning::ShiftDecorator 
+
+end
