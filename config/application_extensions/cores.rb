@@ -25,10 +25,14 @@ class Folder::Application < Rails::Application
   ]
 
   controller_collapses = [
-    Rails.application.root.join("app/controllers/*/"),
+    Rails.application.root.join("app/controllers/*"),
   ]
 
-  all_collapses = namespace_core_collapses | top_level_core_collapses | controller_collapses
+  railtie_collapses = [
+    Rails.application.root.join("app/railties/*")
+  ]
+
+  all_collapses = namespace_core_collapses | top_level_core_collapses | controller_collapses | railtie_collapses
 
   Rails.autoloaders.main.collapse(all_collapses)
 
