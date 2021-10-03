@@ -1,0 +1,10 @@
+# Requiring rails_helper.rb boots Rails and sets up our testing environment.
+require File.expand_path('spec/rails_helper.rb')
+
+RSpec.describe <%= @class_const %>, type: :model do
+
+  it "should ..." do
+
+  end
+
+end

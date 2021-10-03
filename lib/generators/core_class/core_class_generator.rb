@@ -36,7 +36,9 @@ class CoreClassGenerator < Rails::Generators::NamedBase
   end
 
   def create_specs_contents
-
+    @spec_dir = @core_root.join('specs')
+    
+    template "spec.rb.tt", @spec_dir.join("#{@class_name.underscore}_spec.rb")
   end
 
   def create_migration_file

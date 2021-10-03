@@ -7,6 +7,10 @@ class Folder::Application < Rails::Application
     Root      = Rails.root.join('app/cores')
   end
 
+  ###############################
+  # configure Zeitwerk collapses
+  ###############################
+
   namespace_core_collapses = [
     Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/{classes,jobs,decorators,sql}"),
     Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/classes/*"),
@@ -27,5 +31,21 @@ class Folder::Application < Rails::Application
   all_collapses = namespace_core_collapses | top_level_core_collapses | controller_collapses
 
   Rails.autoloaders.main.collapse(all_collapses)
+
+  ###############################
+  # configure Zeitwerk ignores
+  ###############################
+
+  namespace_core_ignores = [
+    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/{specs}")
+  ]
+
+  top_level_core_ignores = [
+    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/{specs}")
+  ]
+
+  all_ignores = namespace_core_ignores | top_level_core_ignores
+
+  Rails.autoloaders.main.ignore(all_ignores)
 
 end
