@@ -1,6 +1,12 @@
 class CoreGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 
+  def validate_arguments
+    unless name =~ /^[a-zA-Z_]{1,}$/
+      raise ArgumentError, "invalid core name, it should be of the format 'core_name'"
+    end
+  end
+
   def set_binding
     @core_root = Folder::Application::Cores::Root.join(name)
     @core_name = name.camelcase

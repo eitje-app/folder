@@ -14,6 +14,7 @@ class CoreClassGenerator < Rails::Generators::NamedBase
   end
 
   def set_binding
+    # make mixin
     @core_name   = name.split('/').first.camelcase
     @class_name  = name.split('/').last.camelcase
     @namespace   = !options['skip_namespace']
@@ -23,11 +24,13 @@ class CoreClassGenerator < Rails::Generators::NamedBase
   end
 
   def create_classes_contents
-    @classes_dir    = @core_root.join("classes/#{@class_name.underscore}")
-    @extensions_dir = @classes_dir.join("extensions")
+    @classes_dir              = @core_root.join("classes/#{@class_name.underscore}")
+    @extensions_namespace_dir = @classes_dir.join(@class_name.underscore)
+    @extensions_dir           = @extensions_namespace_dir.join("extensions")
 
-    Dir.mkdir(@classes_dir)
-    Dir.mkdir(@extensions_dir)
+    mkdir(@classes_dir)
+    mkdir(@extensions_namespace_dir)
+    mkdir(@extensions_dir)
     template "class.rb.tt", @classes_dir.join("#{@class_name.underscore}.rb")
   end
 

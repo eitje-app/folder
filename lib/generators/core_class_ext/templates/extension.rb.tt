@@ -1,0 +1,8 @@
+module <%= @extension_const %>
+  extend ActiveSupport::Concern
+  included do
+
+
+
+  end
+end
