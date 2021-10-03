@@ -11,7 +11,7 @@ class CoreGenerator < Rails::Generators::NamedBase
   end
 
   def create_core_subdirectories
-    subdirectoties = %w( classes decorators jobs mixin specs sql )
+    subdirectoties = %w( classes decorators jobs mixin services specs sql )
     subdirectoties.each { |dir| Dir.mkdir(@core_root.join(dir)) }
   end
 

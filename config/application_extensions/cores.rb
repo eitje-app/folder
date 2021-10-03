@@ -12,14 +12,14 @@ class Folder::Application < Rails::Application
   ###############################
 
   namespace_core_collapses = [
-    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/{classes,jobs,decorators,sql}"),
+    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/{classes,jobs,decorators,sql,services}"),
     Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/classes/*"),
     Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/classes/**/extensions"),
   ]
 
   top_level_core_collapses = [
     Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}"),
-    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/{classes,jobs,decorators,sql}"),
+    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/{classes,jobs,decorators,sql,services}"),
     Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/classes/*"),
     Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/classes/**/extensions"),
   ]
