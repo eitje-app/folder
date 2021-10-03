@@ -2,9 +2,10 @@ class CoreClassGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
   include Rails::Generators::Migration
   
-  class_option :"skip-decorator", type: :boolean, default: false
-  class_option :"skip-spec",      type: :boolean, default: false
-  class_option :"skip-migration", type: :boolean, default: false
+  class_option :"skip-decorator",  type: :boolean, default: false
+  class_option :"skip-controller", type: :boolean, default: false
+  class_option :"skip-spec",       type: :boolean, default: false
+  class_option :"skip-migration",  type: :boolean, default: false
 
   def validate_arguments
     unless name =~ /^[a-z|_]{1,}\/[a-z|_]{1,}$/
@@ -28,6 +29,17 @@ class CoreClassGenerator < Rails::Generators::NamedBase
     Dir.mkdir(@classes_dir)
     Dir.mkdir(@extensions_dir)
     template "class.rb.tt", @classes_dir.join("#{@class_name.underscore}.rb")
+  end
+
+  def create_controller_contents
+    return if options["skip-controller"]
+
+    @controller_root = Rails.root.join("app/controllers/#{@core_name.underscore}")
+    @controller_name = "#{@table_name.camelcase}Controller"
+    file_name        = "#{@controller_name.underscore}.rb"
+
+    template "api_controller.rb.tt", @controller_root.join("api/#{file_name}")
+    template "admin_controller.rb.tt", @controller_root.join("api/admin/#{file_name}")
   end
 
   def create_decorators_contents
@@ -59,4 +71,15 @@ class CoreClassGenerator < Rails::Generators::NamedBase
     template "migration.rb", @migration_dir.join("#{@migration_timestamp}_create_#{@table_name}.rb")
   end
 
+  private
+
+  def mkdir(directory)
+    Dir.mkdir(directory)
+    print_mkdir(directory)
+  end
+
+  def print_mkdir(directory)
+    subdir = directory.to_s.slice /\/app\/[a-zA-Z_\/]{1,}/
+    puts "created directory #{subdir}"
+  end
 end

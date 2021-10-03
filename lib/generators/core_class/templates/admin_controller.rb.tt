@@ -1,0 +1,4 @@
+class <%= "API::Admin::#{@controller_name}" %> < AdminController
+
+
+end

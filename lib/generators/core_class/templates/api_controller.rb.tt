@@ -1,0 +1,4 @@
+class <%= "API::#{@controller_name}" %> < BaseController
+
+
+end
