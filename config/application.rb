@@ -13,4 +13,5 @@ module Folder
   end
 end
 
+require_relative "application_extensions/database_connection"
 require_relative "application_extensions/cores"
