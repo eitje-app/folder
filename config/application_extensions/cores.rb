@@ -1,55 +1,43 @@
 class Folder::Application < Rails::Application
 
   module Cores
+
     Namespace = %i( billing planning )
     TopLevel  = %i( firm revenue )
     All       = Namespace | TopLevel
     Root      = Rails.root.join('app/cores')
+    
   end
 
-  ###############################
-  # configure Zeitwerk collapses
-  ###############################
+  module Zeitwerk
 
-  namespace_core_collapses = [
-    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/{classes,jobs,decorators,sql,services}"),
-    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/classes/*"),
-    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/classes/**/extensions"),
-  ]
+    def self.collect_directories(const)
+      const.constants
+           .map { |container| const_get("#{const}::#{container}") }.flatten
+           .map { |path| Rails.application.root.join(path) }
+    end
 
-  top_level_core_collapses = [
-    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}"),
-    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/{classes,jobs,decorators,sql,services}"),
-    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/classes/*"),
-    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/classes/**/extensions"),
-  ]
+    module Collapse
 
-  controller_collapses = [
-    Rails.application.root.join("app/controllers/*"),
-  ]
+      Core          = [ "app/cores/{#{Cores::All.join(',')}}/{classes,jobs,decorators,sql,services}",
+                        "app/cores/{#{Cores::All.join(',')}}/classes/*",
+                        "app/cores/{#{Cores::All.join(',')}}/classes/**/extensions" ]
+      TopLevelCore  = [ "app/cores/{#{Cores::TopLevel.join(',')}}" ]
+      Controller    = [ "app/controllers/*" ]
+      Railtie       = [ "app/railties/*" ]
 
-  railtie_collapses = [
-    Rails.application.root.join("app/railties/*")
-  ]
+      Rails.autoloaders.main.collapse(Zeitwerk.collect_directories(Collapse))
 
-  all_collapses = namespace_core_collapses | top_level_core_collapses | controller_collapses | railtie_collapses
+    end
 
-  Rails.autoloaders.main.collapse(all_collapses)
+    module Ignore
 
-  ###############################
-  # configure Zeitwerk ignores
-  ###############################
+      Core = [ "app/cores/{#{Cores::All.join(',')}}/{specs}" ]
+      
+      Rails.autoloaders.main.collapse(Zeitwerk.collect_directories(Ignore))
 
-  namespace_core_ignores = [
-    Rails.application.root.join("app/cores/{#{Cores::Namespace.join(',')}}/{specs}")
-  ]
+    end
 
-  top_level_core_ignores = [
-    Rails.application.root.join("app/cores/{#{Cores::TopLevel.join(',')}}/{specs}")
-  ]
-
-  all_ignores = namespace_core_ignores | top_level_core_ignores
-
-  Rails.autoloaders.main.ignore(all_ignores)
+  end
 
 end
