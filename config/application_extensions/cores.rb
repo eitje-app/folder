@@ -38,8 +38,9 @@ class Folder::Application < Rails::Application
 
     module Ignore
 
-      Core = [ "app/cores/{#{Cores::All.join(',')}}/{specs}" ]
-      
+      Core  = [ "app/cores/{#{Cores::All.join(',')}}/{specs}" ]
+      Poros = [ "app/poros" ] # temporary!
+
       Rails.autoloaders.main.ignore(Zeitwerk.collect_directories(Ignore))
       
     end
