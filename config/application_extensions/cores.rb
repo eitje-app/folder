@@ -6,7 +6,7 @@ class Folder::Application < Rails::Application
     TopLevel  = %i( firm revenue )
     All       = Namespace | TopLevel
     Root      = Rails.root.join('app/cores')
-    
+
   end
 
   module Zeitwerk
@@ -34,8 +34,8 @@ class Folder::Application < Rails::Application
 
       Core = [ "app/cores/{#{Cores::All.join(',')}}/{specs}" ]
       
-      Rails.autoloaders.main.collapse(Zeitwerk.collect_directories(Ignore))
-
+      Rails.autoloaders.main.ignore(Zeitwerk.collect_directories(Ignore))
+      
     end
 
   end
