@@ -29,6 +29,19 @@ class CoreGenerator < Rails::Generators::NamedBase
     mkdir(admin_subdir)
   end
 
+  def give_instructions
+    message = <<~EOL
+      
+      *** IMPORTANT ***
+      The #{@core_name} core has been created succesfully.
+      Don't forget to sign the core up for autoloading in /config/application_extensions/cores.rb
+      *** IMPORTANT ***
+
+    EOL
+
+    puts message
+  end
+
   private
 
   def mkdir(directory)
