@@ -1,6 +1,9 @@
 class CoreClassGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
   include Rails::Generators::Migration
+  
+  class_option :"skip-decorator", type: :boolean, default: false
+  class_option :"skip-spec",      type: :boolean, default: false
   class_option :"skip-migration", type: :boolean, default: false
 
   def validate_arguments
@@ -28,6 +31,8 @@ class CoreClassGenerator < Rails::Generators::NamedBase
   end
 
   def create_decorators_contents
+    return if options["skip-decorator"]
+    
     @decorator_dir   = @core_root.join('decorators')
     @decorator_name  = "#{@class_name}Decorator"
     @decorator_const = "#{@class_const}Decorator"
@@ -36,6 +41,8 @@ class CoreClassGenerator < Rails::Generators::NamedBase
   end
 
   def create_specs_contents
+    return if options["skip-spec"]
+    
     @spec_dir = @core_root.join('specs')
     
     template "spec.rb.tt", @spec_dir.join("#{@class_name.underscore}_spec.rb")
