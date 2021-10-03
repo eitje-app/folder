@@ -11,7 +11,7 @@ class Folder::Application < Rails::Application
 
   module Extensions
 
-    Default = %w( scopes validations associations legacy )
+    Default = %w( scopes validations associations refactor )
 
   end
 
