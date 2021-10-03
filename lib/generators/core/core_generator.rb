@@ -1,10 +1,11 @@
 class CoreGenerator < Rails::Generators::NamedBase
+  
   source_root File.expand_path('templates', __dir__)
+  require_relative "../mixins/base_generator_mixin"
+  include BaseGeneratorMixin
 
   def validate_arguments
-    unless name =~ /^[a-zA-Z_]{1,}$/
-      raise ArgumentError, "invalid core name, it should be of the format 'core_name'"
-    end
+    validate_name_as_core
   end
 
   def set_binding
@@ -46,18 +47,6 @@ class CoreGenerator < Rails::Generators::NamedBase
     EOL
 
     puts message
-  end
-
-  private
-
-  def mkdir(directory)
-    Dir.mkdir(directory)
-    print_mkdir(directory)
-  end
-
-  def print_mkdir(directory)
-    subdir = directory.to_s.slice /\/app\/[a-zA-Z_\/]{1,}/
-    puts "created directory #{subdir}"
   end
 
 end
