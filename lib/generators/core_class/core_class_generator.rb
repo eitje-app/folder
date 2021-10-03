@@ -1,5 +1,7 @@
 class CoreClassGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
+  include Rails::Generators::Migration
+  class_option :"skip-migration", type: :boolean, default: false
 
   def validate_arguments
     unless name =~ /^[a-z|_]{1,}\/[a-z|_]{1,}$/
@@ -35,6 +37,17 @@ class CoreClassGenerator < Rails::Generators::NamedBase
 
   def create_specs_contents
 
+  end
+
+  def create_migration_file
+    return if options["skip-migration"]
+
+    @migration_const     = "Create#{@table_name.camelcase}"
+    @migration_dir       = Rails.root.join("db/migrate")
+    @migration_version   = "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+    @migration_timestamp = Time.now.utc.strftime("%Y%m%d%H%M%S")
+
+    template "migration.rb", @migration_dir.join("#{@migration_timestamp}_create_#{@table_name}.rb")
   end
 
 end
