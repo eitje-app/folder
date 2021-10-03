@@ -1,6 +1,7 @@
 class CoreClassExtGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
   argument :extensions, type: :array, default: []
+  class_option :"create-defaults", type: :boolean, default: false
 
   def validate_arguments
     
@@ -8,7 +9,7 @@ class CoreClassExtGenerator < Rails::Generators::NamedBase
       raise ArgumentError, "the argument should be of the format 'core_name/class_name'"
     end
     
-    unless extensions.present?
+    unless extensions.present? || options["create-defaults"]
       raise ArgumentError, "no extensions were given, pass as: `rails generate core_class_ext core_name/class_name ext_name_one ext_name_two`"
     end
 
@@ -28,10 +29,20 @@ class CoreClassExtGenerator < Rails::Generators::NamedBase
   end
 
   def create_extensions
-   extensions.each do |ext|
+   all_extensions.each do |ext|
       @extension_const = "#{@class_const}::#{ext.camelcase}"
       template "extension.rb.tt", "#{@extensions_dir}/#{ext}.rb"
     end
+  end
+
+  private
+
+  def all_extensions
+    extensions | defaults
+  end
+
+  def defaults
+    options["create-defaults"] ? Folder::Application::Extensions::Default : []
   end
 
 end

@@ -9,6 +9,12 @@ class Folder::Application < Rails::Application
 
   end
 
+  module Extensions
+
+    Default = %w( scopes validations associations legacy )
+
+  end
+
   module Zeitwerk
 
     def self.collect_directories(const)
