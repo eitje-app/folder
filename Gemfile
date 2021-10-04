@@ -17,6 +17,7 @@ end
 
 group :development do
   gem 'listen', '~> 3.3'
+  gem 'datagaze', '0.0.1'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

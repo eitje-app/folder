@@ -67,6 +67,8 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
+    datagaze (0.0.1)
+      rake
     diff-lcs (1.4.4)
     erubi (1.10.0)
     ffi (1.15.4)
@@ -168,6 +170,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
+  datagaze (= 0.0.1)
   listen (~> 3.3)
   pry
   puma (~> 5.0)
