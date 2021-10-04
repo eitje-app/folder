@@ -1,0 +1,3 @@
+class OopsError < StandardError
+
+end
