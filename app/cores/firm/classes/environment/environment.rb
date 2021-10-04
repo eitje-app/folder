@@ -1,6 +1,6 @@
 class Environment < ApplicationRecord
 
-  include Text
+  include Associations, Refactor, Scopes, Validations, Text
 
   include Mixin::Firmable
 
