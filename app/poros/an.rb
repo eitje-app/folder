@@ -38,9 +38,13 @@ class An
       @path       = path
       @table_name = table_name
       @columns    = columns
-      @contents   = all_text
+      @contents   = generate_schema_information
 
       File.open(path, "w+") { _1 << @contents }
+    end
+
+    def generate_schema_information
+      title + informational_header + table_information + footer + exisiting_file_contents
     end
 
     def columns
@@ -52,7 +56,16 @@ class An
       columns.sort_by { _1.name }
     end
 
-    def schema_header
+    def table_information
+      @columns.map { column_information(_1) }.join("\n")
+    end
+
+    def exisiting_file_contents
+      contents = File.read(@path)
+      previous_annotate_stripped = contents.gsub(Matcher, '')
+    end
+
+    def informational_header
       name_header    = "column_name".ljust(name_column_width)
       type_header    = "column_type".ljust(type_column_width)
       default_header = "column_default".ljust(default_column_width)
@@ -72,34 +85,21 @@ class An
       [*@columns.map { _1.default&.length }, "column_default".length].compact.max + ColumnPadding
     end
 
-    def column_name
+    def name_column_value
       (@column.name || "-").ljust(name_column_width)
     end
 
-    def column_type
+    def type_column_value
       (@column.type.to_s || "-").ljust(type_column_width)
     end
 
-    def column_default
+    def default_column_value
       (@column.default || "-").ljust(default_column_width)
     end
 
     def column_information(column)
       @column = column
-      column_name + column_type + column_default
-    end
-
-    def schema_body
-      @columns.map { column_information(_1) }.join("\n")
-    end
-
-    def exisiting_file_contents
-      contents = File.read(@path)
-      previous_annotate_stripped = contents.gsub(Matcher, '')
-    end
-
-    def all_text
-      title + schema_header + schema_body + footer + exisiting_file_contents
+      name_column_value + type_column_value + default_column_value
     end
 
     def title
@@ -120,6 +120,24 @@ class An
       EOL
     end
 
+  end
+
+  class << self
+    # drafts for routes
+
+    def routes_path
+      @routes_path ||= Rails.root.join("config/routes")
+    end
+
+    def routes
+      @routes ||= `rails routes`.chomp("\n").split(/\n/, -1)
+    end
+
+    # test_routes = []
+    # Rails.application.routes.routes.each do |route|
+    #   route = route.path.spec.to_s
+    #   test_routes << route if route.starts_with?('/admin')
+    # end
   end
 
 end
